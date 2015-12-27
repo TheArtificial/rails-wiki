@@ -24,7 +24,7 @@ Optionally, a rather blunt attempt is made to pull/push changes to an upstream r
 
 ## Installation
 
-Add Rails Wiki to your Gemfile
+Add rails-wiki to your Gemfile
 
     gem 'rails-wiki'
 
@@ -35,7 +35,22 @@ Your application controller needs to provide two methods:
 
 The user object must response to `.name` and `.email` with string values.
 
-## Configuration
+### Deployment Warning
+
+Until [gollum-lib#180](https://github.com/gollum/gollum-lib/issues/180) is resolved there is a hardcoded but unnecessary dependency on grit. This requires the installation of charlock_holmes, which can be problematic.
+
+See http://tooky.co.uk/using-charklock_holmes-on-heroku/ for tips on Heroku. We presently use this `.buildpack`:
+
+    https://github.com/ddollar/heroku-buildpack-apt
+    https://github.com/timolehto/heroku-bundle-config
+    https://github.com/rcaught/heroku-buildpack-cmake
+    https://github.com/heroku/heroku-buildpack-ruby
+
+and an `Aptfile` specifying only `libicu-dev`.
+
+If you would like to use rails-wiki and have difficulty due to this, open an issue and we'll fork gollum-lib to eliminate this dependency.
+
+## Configuration and Integration
 
 In your `routes.rb`, specify a mount point:
 
@@ -53,9 +68,11 @@ While not recommended, upstream sync can be provided by setting additional prope
 
 _TODO: move this configuration to an initializer?_
 
+See the test/dummy app for an example.
+
 ## Usage
 
-Pathnames that begin with underscore (`_`) are reserved. Besides
+Pathnames that begin with underscore (`_`) are reserved.
 
 ## Feature Roadmap
 
