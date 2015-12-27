@@ -1,0 +1,16 @@
+<% if @query.blank? %>
+  <% content_for :page_title, "all pages" %>
+  <h1>all the wiki</h1>
+  <ul class="toc">
+<% else %>
+  <% content_for :page_title, "search results" %>
+  <h1>pages containing "<%= @query %>"</h1>
+  <ul class="results">
+<% end %>
+
+  <% @pages.each do |v| %>
+    <li>
+      <%= v.parent_path %><%= link_to v.name,   page_path(v) %>
+    </li>
+  <% end %>
+</ul>

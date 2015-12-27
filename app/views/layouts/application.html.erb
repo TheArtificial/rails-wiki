@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Standalone Wiki</title>
+  <%= stylesheet_link_tag    "wiki/application", media: "all" %>
+  <%= javascript_include_tag "wiki/application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>

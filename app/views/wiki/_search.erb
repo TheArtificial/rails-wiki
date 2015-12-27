@@ -1,0 +1,4 @@
+<%= form_tag pages_path, method: :get, url: pages_path do %>
+  <%= text_field_tag :query, params[:query], placeholder: 'search' %>
+  <%= submit_tag "Search", name: 'search', class: 'btn' %>
+<% end %>

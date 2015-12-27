@@ -1,0 +1,21 @@
+<%
+  path = change[:path]
+  page = Rails.configuration.wiki.find_page(path)
+  commit = change[:commit]
+%>
+<li>
+  <div>
+    <% if false # page.present? %>
+      <%= page.parent_path %><%= link_to page.name, page_path(page) %>
+    <% else %>
+      <%= path %>
+    <% end %>
+  </div>
+  <small>
+    <div>
+      by <%= commit.author.name %>
+      <time datetime="<%= commit.authored_date.iso8601 %>" title="<%= commit.authored_date.rfc822 %>"><%= time_ago_in_words(commit.authored_date, include_seconds: false) %> ago</time>
+      (<span title="<%= commit.stats.total %> changes"><%= commit.message %><span>)
+    </div>
+  </small>
+</li>

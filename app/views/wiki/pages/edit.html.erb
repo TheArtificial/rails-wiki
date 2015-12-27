@@ -1,0 +1,69 @@
+<% content_for :page_title, "Editing #{@page.name}" %>
+
+<%= javascript_include_tag 'inject.js' %>
+
+<div class="parents">
+<% if @page.parents
+    @page.parents.each do |v| %>
+  <%= link_to v.name, v unless v.nil? %> /
+<%  end
+  end %>
+</div>
+
+<h1><%= @page.name %></h1>
+
+<ul class="toolbar">
+  <li><a class="btn format" data-prefix="**" data-postfix="**"><strong>B</strong></a></li>
+  <li><a class="btn format" data-prefix="_" data-postfix="_"><em>I</em></a></li>
+  <li><%= link_to 'formatting help', page_path('home/markdown'), class: 'help-link', target: '_blank' %></li>
+  <li><%= link_to 'linking help', page_path('home/linking'), class: 'help-link', target: '_blank' %></li>
+</ul>
+
+<% form_url = @page.persisted? ? update_page_path(@page) : create_page_path(@page) %>
+<%= form_for @page, url: form_url, html: { id: "edit-page", multipart: true }  do |f| %>
+  <%= f.text_area :content %>
+
+  <div class="btn-group">
+    <%= link_to 'cancel', @page, {class: 'btn'} %>
+    <%= f.submit 'save', class: 'btn', id: 'save' %>
+  </div>
+
+  <div class="images">
+  <%
+    images = @page.attachments
+  %>
+  <%= pluralize(images.count, 'image') %> here
+  <ul>
+  <% images.each do |a| %>
+    <li>
+      <span title="<%= a.mime_type %>"><%= a.name %></span>
+      <a href="#" class="btn insert-image" data-path="<%= File.basename(@page.path,'.html') %>/<%= a.name %>" data-name="<%= a.name.titlecase %>">[insert]</a>
+      <%= link_to destroy_page_path(a.path), class: 'btn', confirm: 'Are you sure?' do %>[delete]<% end %>
+    </li>
+  <% end %>
+  </ul>
+
+  <%= f.file_field :uploaded_files, accept: 'image/*', multiple: true %>
+
+  </div>
+<% end %>
+
+
+<script>
+
+//  autosizeLite($('textarea'));
+
+  $(document).ready(function() {
+
+    $('.format').click(function() {
+      $('#page_content').inject($(this).data('prefix'), $(this).data('postfix'));
+    });
+
+
+    $('.insert-image').click(function() {
+      $('#page_content').inject('!['+$(this).data('name')+']('+$(this).data('path')+')', '');
+    });
+
+  });
+
+</script>

@@ -1,0 +1,19 @@
+<% content_for :nav do %>
+  <h2><%= link_to 'wiki', page_path(Rails.configuration.wiki.home_page) %>:</h2>
+  <ul>
+    <% Rails.configuration.wiki.top_pages.each do |v| %>
+      <li><%= link_to v.name, v %></li>
+    <% end %>
+  </ul>
+  <ul class="find">
+    <li><%= link_to 'changelog', log_path %></li>
+    <li><%= link_to 'contents', pages_path %></li>
+    <li>
+      <%= render partial: 'wiki/search' %>
+    </li>
+  </ul>
+<% end %>
+<% content_for :content do %>
+  <%= yield %>
+<% end %>
+<%= render template: "layouts/application" %>

@@ -1,0 +1,50 @@
+<% content_for :page_title, @page.name %>
+
+<div class="parents">
+<% if @page.parents
+    @page.parents.each do |v| %>
+  <%= link_to v.name, v unless v.nil? %> /
+<%  end
+  end %>
+</div>
+
+<h1 class="page-title"><%= @page.name %></h1>
+
+<div>
+  <%== @page.html %>
+</div>
+
+<div class="btn-group">
+  <small class="metadata">
+    version <%= link_to @page.gollum_page.version_short, @page.history_url %>
+  </small>
+  <%= link_to "Edit", edit_page_path(@page), {class: 'btn'} %>
+</div>
+
+<%
+  attachements = @page.attachments
+  if attachements.count > 0
+%>
+<div class="images">
+  Images
+  <ul>
+  <% attachements.each do |a| %>
+    <li><%= link_to a.name, a %></li>
+  <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="children">
+<%
+  children = @page.children
+  if children.count > 0
+%>
+  Children
+  <ul>
+  <% children.each do |p| %>
+    <li><%= link_to p.name, p %></li>
+  <% end %>
+  </ul>
+<% end %>
+</div>

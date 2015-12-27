@@ -1,0 +1,29 @@
+<% content_for :page_title, "changes" %>
+
+<h1>recently changed</h1>
+
+<dl class="changelog">
+  <%
+    @changes_by_path.each do |change_path|
+      path = change_path[0]
+      first_commit = change_path[1].first
+      page = first_commit[:page]
+      commit = first_commit[:commit]
+  %>
+    <dt>
+      <% if page.present? %>
+        <% if page.new_page? %>
+          <%= page.path %>
+        <% else %>
+          <%= page.parent_path %>/ <%= link_to_unless page.new_page?, page.name, page_path(page) %>
+        <% end %>
+      <% end %>
+    </dt><dd>
+      <%= commit.author.name.split(' ').first %>
+      <span title="<%= commit.stats %>"><%= commit.message %></span>
+      <time datetime="<%= commit.authored_date.iso8601 %>" title="<%= commit.authored_date.rfc822 %>"><%= time_ago_in_words(commit.authored_date, include_seconds: false) %> ago</time>
+    </dd>
+  <%
+    end
+  %>
+</dl>
