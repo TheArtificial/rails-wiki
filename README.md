@@ -1,6 +1,16 @@
 # Rails Wiki
 
-A small Rails engine that provides a git-based Markdown wiki.
+A small Rails engine that provides an opinionated, git-based, Markdown wiki.
+
+WARNING: this has been abstracted from a proprietary tool, and so is poorly documented and lacks a standalone test suite.
+
+Alternatives to consider include:
+
+- [GollumRails](https://github.com/dancinglightning/gollum_rails) confusingly does not use gollum-lib, but also provides an engine with Gollum-like features
+
+- [gollum_rails](https://github.com/nirnanaaa/gollum_rails) simplifies using gollum-lib from Rails via generators
+
+Rails Wiki exists because we desired a git-backed wiki using Markdown, YAML frontmatter, and a hierarchical namespace for pages and attachments.
 
 ## How it Works
 
@@ -10,7 +20,7 @@ The storage structure will be familiar to users of Middleman or Jekyll. Each pag
 
 All storage is via a local Git repository. Optionally, a remote can be specified and changes will be pushed to it.
 
-_TODO: review and document remote behavior_
+Optionally, a rather blunt attempt is made to pull/push changes to an upstream repository.
 
 ## Installation
 
@@ -35,6 +45,11 @@ In your `config/environment/*` files, configure the wiki:
 
     require 'rails-wiki'
     Wiki.local_directory = 'db/wiki'
+
+While not recommended, upstream sync can be provided by setting additional properties on the module:
+
+    Wiki.remote_url = "https://github.com/TheArtificial/wiki"
+    Wiki.history_url = "https://github.com/TheArtificial/wiki/commits/master/"
 
 _TODO: move this configuration to an initializer?_
 
