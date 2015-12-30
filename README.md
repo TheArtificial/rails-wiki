@@ -4,11 +4,9 @@ A small Rails engine that provides an opinionated, git-based, Markdown wiki.
 
 WARNING: this has been abstracted from a proprietary tool, and so is poorly documented and lacks a standalone test suite.
 
-Alternatives to consider include:
+This may be a suitable replacement for [GollumRails](https://github.com/dancinglightning/gollum_rails), which confusingly does not use gollum-lib, but also provides an engine with Gollum-like features.
 
-- [GollumRails](https://github.com/dancinglightning/gollum_rails) confusingly does not use gollum-lib, but also provides an engine with Gollum-like features
-
-- [gollum_rails](https://github.com/nirnanaaa/gollum_rails) simplifies using gollum-lib from Rails via generators
+If instead of a turnkey engine you want to use gollum-lib and all of its power from within your Rails app, consider [gollum_rails](https://github.com/nirnanaaa/gollum_rails).
 
 Rails Wiki exists because we desired a git-backed wiki using Markdown, YAML frontmatter, and a hierarchical namespace for pages and attachments.
 
@@ -24,7 +22,7 @@ Optionally, a rather blunt attempt is made to pull/push changes to an upstream r
 
 ## Installation
 
-Add rails-wiki to your Gemfile
+Add `rails-wiki` to your Gemfile
 
     gem 'rails-wiki'
 
