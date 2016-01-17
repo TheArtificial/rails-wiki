@@ -1,4 +1,18 @@
-<% content_for :content do %>
-  <%= yield %>
+<% if content_for?(:page_heading) %>
+	<%= yield :page_heading %>
 <% end %>
-<%= render template: "layouts/application" %>
+
+<%= yield %>
+
+<div class="metadata">
+<% if content_for?(:page_meta) %>
+	<%= yield :page_meta %>
+<% end %>
+<% if content_for?(:page_actions) %>
+	<%= yield :page_actions %>
+<% end %>
+</div>
+
+<% if content_for?(:page_related) %>
+	<%= yield :page_related %>
+<% end %>

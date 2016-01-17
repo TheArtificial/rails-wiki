@@ -1,10 +1,14 @@
 <% if @query.blank? %>
   <% content_for :page_title, "all pages" %>
-  <h1>all the wiki</h1>
+  <% content_for :page_heading do %>
+    <h1>all the wiki</h1>
+  <% end %>
   <ul class="toc">
 <% else %>
   <% content_for :page_title, "search results" %>
-  <h1>pages containing "<%= @query %>"</h1>
+  <% content_for :page_heading do %>
+    <h1>pages containing "<%= @query %>"</h1>
+  <% end %>
   <ul class="results">
 <% end %>
 

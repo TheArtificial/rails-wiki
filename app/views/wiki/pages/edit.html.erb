@@ -2,15 +2,17 @@
 
 <%= javascript_include_tag 'inject.js' %>
 
-<div class="parents">
-<% if @page.parents
-    @page.parents.each do |v| %>
-  <%= link_to v.name, v unless v.nil? %> /
-<%  end
-  end %>
-</div>
+<% content_for :page_heading do %>
+  <div class="parents">
+  <% if @page.parents
+      @page.parents.each do |v| %>
+    <%= link_to v.name, v unless v.nil? %> /
+  <%  end
+    end %>
+  </div>
 
-<h1><%= @page.name %></h1>
+  <h1><%= @page.name %></h1>
+<% end %>
 
 <ul class="toolbar">
   <li><a class="btn format" data-prefix="**" data-postfix="**"><strong>B</strong></a></li>
