@@ -15,9 +15,9 @@
 </div>
 
 <div class="btn-group">
-  <small class="metadata">
+  <span class="metadata">
     version <%= link_to @page.gollum_page.version_short, @page.history_url %>
-  </small>
+  </span>
   <%= link_to "Edit", edit_page_path(@page), {class: 'btn'} %>
 </div>
 
@@ -25,8 +25,8 @@
   attachements = @page.attachments
   if attachements.count > 0
 %>
-<div class="images">
-  Images
+<div class="attachments">
+  <div class="section-title">Attachments</div>
   <ul>
   <% attachements.each do |a| %>
     <li><%= link_to a.name, a %></li>
@@ -40,7 +40,7 @@
   children = @page.children
   if children.count > 0
 %>
-  Children
+  <div class="section-title">Children</div>
   <ul>
   <% children.each do |p| %>
     <li><%= link_to p.name, p %></li>
