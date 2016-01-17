@@ -1,6 +1,5 @@
 <% content_for :nav do %>
-  <h2><%= link_to 'wiki', page_path(Rails.configuration.wiki.home_page) %>:</h2>
-  <ul>
+  <ul class="tops">
     <% Rails.configuration.wiki.top_pages.each do |v| %>
       <li><%= link_to v.name, v %></li>
     <% end %>
