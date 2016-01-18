@@ -1,18 +1,46 @@
-<% if content_for?(:page_heading) %>
-	<%= yield :page_heading %>
-<% end %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rails Wiki</title>
+  <%= stylesheet_link_tag    "wiki/application", media: "all" %>
+  <%= javascript_include_tag "wiki/application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
 
-<%= yield %>
+	<nav>
+		<ul class="tops">
+			<% Rails.configuration.wiki.top_pages.each do |v| %>
+				<li><%= link_to v.name, v %></li>
+			<% end %>
+		</ul>
+		<ul class="find">
+			<li><%= link_to 'changelog', log_path %></li>
+			<li><%= link_to 'contents', pages_path %></li>
+			<li>
+				<%= render partial: 'wiki/search' %>
+			</li>
+		</ul>
+	</nav>
 
-<div class="metadata">
-<% if content_for?(:page_meta) %>
-	<%= yield :page_meta %>
-<% end %>
-<% if content_for?(:page_actions) %>
-	<%= yield :page_actions %>
-<% end %>
-</div>
+	<% if content_for?(:page_heading) %>
+		<%= yield :page_heading %>
+	<% end %>
 
-<% if content_for?(:page_related) %>
-	<%= yield :page_related %>
-<% end %>
+	<%= yield %>
+
+	<div class="metadata">
+	<% if content_for?(:page_meta) %>
+		<%= yield :page_meta %>
+	<% end %>
+	<% if content_for?(:page_actions) %>
+		<%= yield :page_actions %>
+	<% end %>
+	</div>
+
+	<% if content_for?(:page_related) %>
+		<%= yield :page_related %>
+	<% end %>
+
+</body>
+</html>

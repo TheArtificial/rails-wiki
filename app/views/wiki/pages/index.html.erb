@@ -14,7 +14,7 @@
 
   <% @pages.each do |v| %>
     <li>
-      <%= v.parent_path %><%= link_to v.name,   page_path(v) %>
+      <%= "#{v.parent_path}/ " unless v.parent_path.blank? %><%= link_to v.name,   page_path(v) %>
     </li>
   <% end %>
 </ul>
