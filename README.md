@@ -2,17 +2,17 @@
 
 A small Rails engine that provides an opinionated, git-based, Markdown wiki.
 
-WARNING: this has been abstracted from a proprietary tool, and so is poorly documented and lacks a standalone test suite.
+**This has been abstracted from a proprietary tool, and so is not well documented and lacks a standalone test suite.**
 
-This may be a suitable replacement for [GollumRails](https://github.com/dancinglightning/gollum_rails), which confusingly does not use gollum-lib, but also provides an engine with Gollum-like features.
+This aims to become a suitable replacement for [GollumRails](https://github.com/dancinglightning/gollum_rails), which confusingly does not use gollum-lib, but also provides an engine with Gollum-like features.
 
-If instead of a turnkey engine you want to use gollum-lib and all of its power from within your Rails app, consider [gollum_rails](https://github.com/nirnanaaa/gollum_rails).
+If instead of a mountable engine you want to use gollum-lib to weave wiki functionality into your own models  and views, consider [gollum_rails](https://github.com/nirnanaaa/gollum_rails).
 
 Rails Wiki exists because we desired a git-backed wiki using Markdown, YAML frontmatter, and a hierarchical namespace for pages and attachments.
 
 ## How it Works
 
-Rails Wiki is based on [gollum-lib](https://github.com/gollum/gollum-lib). None of [Gollum](https://github.com/gollum/gollum/wiki)'s layout (e.g. sidebars, headers, footers) are implemented, and a many of the text filters (e.g. macros, code, diagrams) have been disabled. Also unlike Gollum, the hierarchy of pages is considered meaningful.
+Rails Wiki is based on [gollum-lib](https://github.com/gollum/gollum-lib). None of [Gollum](https://github.com/gollum/gollum/wiki)'s layout (e.g. sidebars, headers, footers) are implemented, and most of the text filters (e.g. macros, code, diagrams) have been disabled. Also unlike Gollum, the hierarchy of pages is considered meaningful.
 
 The storage structure will be familiar to users of Middleman or Jekyll. Each page is an `.md` file with YAML frontmatter for metadata. Other files are treated as attachments to the page associated with their containing directory.
 
@@ -33,6 +33,8 @@ Your application controller needs to provide two methods:
 
 The user object must response to `.name` and `.email` with string values.
 
+You will probably wish to override the sparse view layout. Create a `layouts/wiki` (e.g. at `app/views/layouts/wiki.html.erb`) within your app, using the content blocks seen in the [default layout](app/views/layouts/wiki.html.erb).
+
 ### Deployment Warning
 
 Until [gollum-lib#180](https://github.com/gollum/gollum-lib/issues/180) is resolved there is a hardcoded but unnecessary dependency on grit. This requires the installation of charlock_holmes, which can be problematic.
@@ -44,7 +46,7 @@ See http://tooky.co.uk/using-charklock_holmes-on-heroku/ for tips on Heroku. We 
     https://github.com/rcaught/heroku-buildpack-cmake
     https://github.com/heroku/heroku-buildpack-ruby
 
-and an `Aptfile` specifying only `libicu-dev`.
+and an `Aptfile` specifying `libicu-dev`.
 
 If you would like to use rails-wiki and have difficulty due to this, open an issue and we'll fork gollum-lib to eliminate this dependency.
 
