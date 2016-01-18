@@ -1,6 +1,6 @@
 Wiki::Engine.routes.draw do
 
-  root 'pages#index'
+  root 'application#root'
   match '_new/*path', to: 'pages#new', via: :get, as: 'new_page'
   match '_edit/*path', to: 'pages#edit', via: :get, as: 'edit_page'
   match '_update/*path', to: 'pages#update', via: [:put, :patch], as: 'update_page'

@@ -6,9 +6,12 @@ module Wiki
 
     layout 'layouts/wiki'
 
-    def display
+    def root
       @home = Rails.configuration.wiki.home_page
+      redirect_to @home
+    end
 
+    def display
       ext = File.extname(request.path_info).downcase
       if ext.blank? || ext == ".html"
         @page = Rails.configuration.wiki.find_page(params[:path])
