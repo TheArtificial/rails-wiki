@@ -1,7 +1,7 @@
 <% content_for :page_title, @page.name %>
 
 <% content_for :page_heading do %>
-  <% if @page.parents %>
+  <% if @page.parents.present? %>
     <div class="parents">
       <% @page.parents.each do |v| %>
         <%= link_to v.name, v unless v.nil? %> /
