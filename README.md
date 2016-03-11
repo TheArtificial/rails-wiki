@@ -77,9 +77,9 @@ Pathnames that begin with underscore (`_`) are reserved.
 ## Feature Roadmap
 
 1. Markdown link rooting
-1. Recursive page deletion
-1. Individual attachment deletion
-1. Path redirection rules
-1. Configurable help paths
-1. Nicer attachment upload
-1. Nicer page editing
+2. Recursive page deletion
+3. Individual attachment deletion
+4. Path redirection rules
+5. Configurable help paths
+6. Nicer attachment upload
+7. Nicer page editing

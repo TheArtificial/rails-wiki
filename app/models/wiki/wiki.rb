@@ -44,7 +44,6 @@ class Wiki
       c.stats.files.each do |f|
         path = f[0]
         if File.extname(path) == '.md'
-          Rails.logger.debug "--- adding to log: #{path} "
           path.chomp!('.md')
           log << {path: path, page: Page.new(wiki: self, path: path), commit: c}
         end
