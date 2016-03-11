@@ -14,9 +14,6 @@ if repo_url.present?
     Rails.logger.error "Unable to clone #{repo_url} to #{local_dir}: #{output}"
   end
   puts "Cloned wiki repo: #{output}"
-  # Rugged will use these for commits, (with the committer values as author)
-  `git config --global user.name 'The Artificial intranet'`
-  `git config --global user.email 'robots@theartificial.nl'`
 
   upstream = 'origin'
 else
