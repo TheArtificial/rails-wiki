@@ -7,17 +7,25 @@ upstream = nil
 FileUtils.mkdir_p(local_dir) unless File.directory?(local_dir)
 
 if repo_url.present?
-  output = `git clone #{repo_url} #{local_dir} 2>&1`
-  if $?.success?
-    Rails.logger.info "Cloned #{repo_url} to #{local_dir}: #{output}"
-  else
-    Rails.logger.error "Unable to clone #{repo_url} to #{local_dir}: #{output}"
-  end
-  puts "Cloned wiki repo: #{output}"
-
   upstream = 'origin'
+  if File.exist?(local_dir)
+    output = `cd #{local_dir} && git pull #{upstream} master 2>&1`
+    if $?.success?
+      Rails.logger.info "Pulled #{repo_url} to #{local_dir}: #{output}"
+    else
+      Rails.logger.error "Unable to pull #{repo_url} to #{local_dir}: #{output}"
+    end
+  else
+    output = `git clone #{repo_url} #{local_dir} 2>&1`
+    if $?.success?
+      Rails.logger.info "Cloned #{repo_url} to #{local_dir}: #{output}"
+    else
+      Rails.logger.error "Unable to clone #{repo_url} to #{local_dir}: #{output}"
+    end
+    # puts "Cloned wiki repo: #{output}"
+  end
 else
-  Rails.logger.info "Initializing #{local_dir}"
+  Rails.logger.warn "Initializing #{local_dir} for local use [WITH NO UPSTREAM BACKUP]"
   system "git init #{local_dir}"
 end
 
