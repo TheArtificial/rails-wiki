@@ -170,10 +170,13 @@ class Wiki
       output = `cd #{@gollum_wiki.path} && git push #{@upstream} master 2>&1`
       if $?.success?
         puts "Pushed: #{output}"
+        return output
       else
         puts "Unable to push: #{output}"
         raise Exception.new("Git push in #{@gollum_wiki.path} failed with status #{$?.exitstatus}: #{output}")
       end
+    else
+      return "No upstream"
     end
   end
 
@@ -183,10 +186,13 @@ class Wiki
       if $?.success?
         puts "Pulled: #{output}"
         refresh
+        return output
       else
         puts "Unable to pull: #{output}"
         raise Exception.new("Git pull in #{@gollum_wiki.path} failed with status #{$?.exitstatus}: #{output}")
       end
+    else
+      return "No upstream"
     end
   end
 
