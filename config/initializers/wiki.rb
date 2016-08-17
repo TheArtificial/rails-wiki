@@ -8,7 +8,7 @@ FileUtils.mkdir_p(local_dir) unless File.directory?(local_dir)
 
 if repo_url.present?
   upstream = 'origin'
-  if File.exist?(local_dir)
+  if File.exist?(File.join(local_dir, '.git'))
     output = `cd #{local_dir} && git pull #{upstream} master 2>&1`
     if $?.success?
       Rails.logger.info "Pulled #{repo_url} to #{local_dir}: #{output}"
