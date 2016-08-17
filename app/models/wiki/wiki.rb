@@ -182,6 +182,7 @@ class Wiki
       output = `cd #{@gollum_wiki.path} && git pull #{@upstream} master 2>&1`
       if $?.success?
         puts "Pulled: #{output}"
+        refresh
       else
         puts "Unable to pull: #{output}"
         raise Exception.new("Git pull in #{@gollum_wiki.path} failed with status #{$?.exitstatus}: #{output}")
