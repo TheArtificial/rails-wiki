@@ -4,7 +4,7 @@ A small Rails engine that provides an opinionated, git-based, Markdown wiki.
 
 **This has been abstracted from a proprietary tool, and so is not well documented and lacks a standalone test suite.**
 
-This aims to become a suitable replacement for [GollumRails](https://github.com/dancinglightning/gollum_rails), which confusingly does not use gollum-lib, but also provides an engine with Gollum-like features.
+This aims to become a suitable replacement for [GollumRails](https://github.com/dancinglightning/gollum_rails), which does not actually use gollum-lib, but also provides an engine with Gollum-like features. (The name is historic.)
 
 If instead of a mountable engine you want to use gollum-lib to weave wiki functionality into your own models  and views, consider [gollum_rails](https://github.com/nirnanaaa/gollum_rails).
 
@@ -37,18 +37,13 @@ You will probably wish to override the sparse view layout. Create a `layouts/wik
 
 ### Deployment Warning
 
-Until [gollum-lib#180](https://github.com/gollum/gollum-lib/issues/180) is resolved there is a hardcoded but unnecessary dependency on grit. This requires the installation of charlock_holmes, which can be problematic.
+Until [gollum-lib#180](https://github.com/gollum/gollum-lib/issues/180) is resolved there is a hardcoded but unnecessary dependency on grit in gollum-lib. This in turn requires charlock_holmes, which can be [problematic](http://tooky.co.uk/using-charklock_holmes-on-heroku/).
 
-See http://tooky.co.uk/using-charklock_holmes-on-heroku/ for tips on Heroku. We presently use this `.buildpack`:
+To avoid this, you may use our temporary fork of gollum-lib by including it in your Gemfile prior to rails-wiki:
 
-    https://github.com/ddollar/heroku-buildpack-apt
-    https://github.com/timolehto/heroku-bundle-config
-    https://github.com/rcaught/heroku-buildpack-cmake
-    https://github.com/heroku/heroku-buildpack-ruby
+    gem 'gollum-lib', git: 'https://github.com/TheArtificial/gollum-lib.git', branch: 'master'
 
-and an `Aptfile` specifying `libicu-dev`.
-
-If you would like to use rails-wiki and have difficulty due to this, open an issue and we'll fork gollum-lib to eliminate this dependency.
+([This discussion](http://stackoverflow.com/questions/6499410/ruby-gemspec-dependency-is-possible-have-a-git-branch-dependency) may be interesting if you're curious about this approach to a temporary issue.)
 
 ## Configuration and Integration
 
