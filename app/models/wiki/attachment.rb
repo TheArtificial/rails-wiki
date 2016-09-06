@@ -49,7 +49,7 @@ class Attachment
     if gollum_file
       self.gollum_file = gollum_file
     elsif path
-      safepath = path.downcase
+      safepath = path.downcase.gsub(' ','-')
       @path = safepath
       new_file = @wiki.find_gollum_file(safepath)
       if new_file

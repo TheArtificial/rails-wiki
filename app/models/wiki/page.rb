@@ -54,13 +54,13 @@ class Page
     if gollum_page
       self.gollum_page = gollum_page
     elsif path
-      safepath = path.downcase
+      safepath = path.downcase.gsub(' ','-')
       @path = safepath
       new_page = @wiki.find_gollum_page(safepath)
       if new_page
         self.gollum_page = new_page
       else
-        @name = safepath.split('/').last
+        @name = safepath.split('/').last.gsub('-',' ')
         @blank = true
       end
     end
