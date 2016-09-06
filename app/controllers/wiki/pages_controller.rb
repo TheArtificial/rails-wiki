@@ -18,6 +18,7 @@ class Wiki::PagesController < Wiki::ApplicationController
   end
 
   def new
+    Rails.configuration.wiki.pull_repo
     @page = Rails.configuration.wiki.find_page(params[:path])
     render :edit
   end
