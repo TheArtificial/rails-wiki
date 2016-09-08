@@ -23,16 +23,16 @@
 <% end %>
 
 <%
-  attachements = @page.attachments
+  attachments = @page.attachments
   children = @page.children
-  if attachements.present? || children.present?
+  if attachments.present? || children.present?
     content_for :page_related do
 %>
-  <% if attachements.count > 0 %>
+  <% if attachments.count > 0 %>
     <div class="attachments">
       <div class="section-title">Attachments</div>
       <ul>
-      <% attachements.each do |a| %>
+      <% attachments.each do |a| %>
         <li><%= link_to a.name, a %></li>
       <% end %>
       </ul>
