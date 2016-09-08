@@ -15,6 +15,10 @@ class Wiki::PagesController < Wiki::ApplicationController
 
   def log
     @changes_by_path = Rails.configuration.wiki.changelog.group_by{|c| c[:path]}
+    respond_to do |format|
+      format.html
+      format.rss { render :layout => false }
+    end
   end
 
   def new

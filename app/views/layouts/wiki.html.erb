@@ -5,6 +5,7 @@
   <%= stylesheet_link_tag    "wiki/application", media: "all" %>
   <%= javascript_include_tag "wiki/application" %>
   <%= csrf_meta_tags %>
+  <%= auto_discovery_link_tag :rss {controller: 'pages', action: 'log'} %>
 </head>
 <body>
 
