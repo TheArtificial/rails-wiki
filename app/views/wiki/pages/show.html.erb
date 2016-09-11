@@ -32,7 +32,7 @@
 %>
   <% if attachments.count > 0 %>
     <div class="attachments">
-      <h2>Attachments</h2>
+      <div class="section-title">Attachments</div>
       <ul>
       <% attachments.each do |a| %>
         <li><%= link_to a.name, a %></li>
@@ -42,7 +42,7 @@
   <% end %>
   <% if children.count > 0 %>
     <div class="children">
-      <h2>Children</h2>
+      <div class="section-title">Children</div>
       <ul>
       <% children.each do |p| %>
         <li><%= link_to p.name, p %></li>
