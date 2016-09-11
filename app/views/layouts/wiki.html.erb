@@ -24,9 +24,13 @@
 		</ul>
 	</nav>
 
-	<% if content_for?(:page_heading) %>
-		<%= yield :page_heading %>
+	<% if content_for?(:page_parents) %>
+		<%= yield :page_parents %>
 	<% end %>
+
+  <% if content_for?(:page_title) %>
+    <%= yield :page_title %>
+  <% end %>
 
 	<%= yield %>
 

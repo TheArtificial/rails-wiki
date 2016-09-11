@@ -2,7 +2,7 @@
 
 <%= javascript_include_tag 'inject.js' %>
 
-<% content_for :page_heading do %>
+<% content_for :page_parents do %>
   <div class="parents">
   <% if @page.parents
       @page.parents.each do |v| %>
@@ -10,7 +10,9 @@
   <%  end
     end %>
   </div>
+<% end %>
 
+<% content_for :page_title do %>
   <h1 class="page-title"><%= @page.name %></h1>
 <% end %>
 
