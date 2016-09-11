@@ -1,6 +1,6 @@
 <% content_for :page_title, @page.name %>
 
-<% content_for :page_heading do %>
+<% content_for :page_parents do %>
   <% if @page.parents.present? %>
     <div class="parents">
       <% @page.parents.each do |v| %>
@@ -8,7 +8,9 @@
       <% end %>
     </div>
   <% end %>
+<% end %>
 
+<% content_for :page_title do %>
   <h1 class="page-title"><%= @page.name %></h1>
 <% end %>
 
