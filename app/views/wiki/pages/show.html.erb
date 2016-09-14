@@ -2,11 +2,9 @@
 
 <% content_for :page_parents do %>
   <% if @page.parents.present? %>
-    <div class="parents">
-      <% @page.parents.each do |v| %>
-        <%= link_to v.name, v unless v.nil? %> /
-      <% end %>
-    </div>
+    <% @page.parents.each do |v| %>
+      <%= link_to v.name, v unless v.nil? %> /
+    <% end %>
   <% end %>
 <% end %>
 
