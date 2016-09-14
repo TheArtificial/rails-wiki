@@ -34,12 +34,12 @@ class Wiki
     search_regex(regex, options)
   end
 
-  def changelog(path=nil, max=100)
+  def changelog(parent_path=nil, max_commits=100)
     log = []
     # this is more gollum proper, but we can't set the path
     # commits = @gollum_wiki.latest_changes(max_count: max)
     ref = @gollum_wiki.ref # probably 'master'
-    commits = @gollum_wiki.repo.log(ref, path, {max_count: max})
+    commits = @gollum_wiki.repo.log(ref, parent_path, {max_count: max_commits})
     commits.each do |c|
       c.stats.files.each do |f|
         path = f[0]
@@ -50,6 +50,24 @@ class Wiki
       end
     end
     return log
+  end
+
+  def recent_updates(parent_path=nil, max_commits=100)
+    updates = []
+    changelog(parent_path, max_commits).group_by{|c| c[:path]}.each do |change_path|
+      first_commit = change_path[1].first
+      commit = first_commit[:commit]
+
+      path = change_path[0]
+      page = first_commit[:page]
+      author_name = commit.author.name
+      message = commit.message
+      stats = commit.stats
+      date = commit.authored_date
+
+      updates << {path: path, page: page, author_name: author_name, message: message, stats: stats, date: date}
+    end
+    return updates
   end
 
   def create_page(path)

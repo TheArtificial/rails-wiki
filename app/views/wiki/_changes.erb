@@ -1,0 +1,24 @@
+<dl class="changelog">
+  <% Rails.configuration.wiki.recent_updates().each do |change|
+      path = change[:path]
+      page = change[:page]
+      author_name = change[:author_name]
+      stats = change[:stats]
+      message = change[:message]
+      date = change[:date]
+  %>
+  <dt>
+    <% if page.present? %>
+      <% if page.new_page? %>
+        <%= page.path %>
+      <% else %>
+        <%= page.parent_path %>/ <%= link_to_unless page.new_page?, page.name, wiki.page_path(page) %>
+      <% end %>
+    <% end %>
+  </dt><dd>
+    <%= author_name %>
+    <span title="<%= stats %>"><%= message %></span>
+    <time datetime="<%= date.iso8601 %>" title="<%= date.rfc822 %>"><%= time_ago_in_words(date, include_seconds: false) %> ago</time>
+  </dd>
+  <% end %>
+</dl>
