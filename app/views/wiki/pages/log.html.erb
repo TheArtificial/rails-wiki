@@ -4,6 +4,10 @@
   <h1>recently changed</h1>
 <% end %>
 
+<% content_for :page_meta do %>
+  <%= auto_discovery_link_tag :rss, {controller: 'pages', action: 'log'} %>
+<% end %>
+
 <dl class="changelog">
   <%
     @changes_by_path.each do |change_path|
