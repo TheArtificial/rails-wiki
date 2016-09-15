@@ -3,7 +3,7 @@ module Wiki
     def wiki_updates(options)
       # path: parent path
       # limit: max updates
-      render partial: 'wiki/updates', locals: {updates: Rails.configuration.wiki.recent_updates(options)}
+      render partial: 'wiki/updates', locals: {updates: Rails.configuration.wiki.recent_updates(options), options: options}
     end
   end
 end

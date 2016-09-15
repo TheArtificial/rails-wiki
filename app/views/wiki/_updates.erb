@@ -1,4 +1,9 @@
-<dl class="changelog">
+<% if options[:style] == :simple
+%>
+  <ol class="wiki changelog">
+<% else %>
+  <dl class="wiki changelog">
+<% end %>
   <% updates.each do |update|
       path = update[:path]
       page = update[:page]
@@ -8,18 +13,23 @@
       date = update[:date]
       count = update[:count]
   %>
-  <dt>
+  <%== (options[:style] == :simple) ? "<li>" : "<dt>" %>
     <% if page.present? %>
       <% if page.new_page? %>
         <%= page.path %>
       <% else %>
-        <%= page.parent_path %>/<%= link_to_unless page.new_page?, page.name, wiki.page_path(page) %>
+        <%= page.parent_path %>/ <%= link_to_unless page.new_page?, page.name, wiki.page_path(page) %>
       <% end %>
     <% end %>
-  </dt><dd>
-    <%= author_name %>
-    <span title="<%= "#{pluralize(count-1, 'other changes')} evaluated" if (count > 1) %>"><%= message %></span>
-    <time datetime="<%= date.iso8601 %>" title="<%= date.rfc822 %>"><%= time_ago_in_words(date, include_seconds: false) %> ago</time>
-  </dd>
+    <% if options[:style] == :simple
+    %>
+      </li>
+    <% else %>
+      </dt><dd>
+      <%= author_name %>
+      <span title="<%= "#{pluralize(count-1, 'other changes')} evaluated" if (count > 1) %>"><%= message %></span>
+      <time datetime="<%= date.iso8601 %>" title="<%= date.rfc822 %>"><%= time_ago_in_words(date, include_seconds: false) %> ago</time>
+    </dd>
+    <% end %>
   <% end %>
 </dl>
