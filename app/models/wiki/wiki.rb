@@ -44,13 +44,16 @@ class Wiki
     commits.each do |c|
       c.stats.files.each do |f|
         path = f[0]
-        if File.extname(path) == '.md'
+        if parent_path && ! path.starts_with?(parent_path)
+          # we don't want this one
+        elsif File.extname(path) == '.md'
           path.chomp!('.md')
           log << {path: path, commit: c}
         end
       end
     end
-    return log
+    # if we're out of commits, return nil rather than []
+    return commits.empty? ? nil : log
   end
 
   # one entry for each file
@@ -60,15 +63,14 @@ class Wiki
       limit: 10
     }
     options = default_options.merge(options)
-
-    paging_window = options[:limit] * 2
-paging_window = 1 # TODO remove
+    limit = [options[:limit], 1].max
+    paging_window = limit * 2
 
     updates_hash = {}
     offset = 0
-    limit = options[:limit]
     until updates_hash.count >= limit
       changes = recent_changes(options[:path], paging_window, offset)
+      break if changes.nil? # we ran out of commits first
       group_changes_into_updates(changes, updates_hash)
       offset += paging_window
     end
