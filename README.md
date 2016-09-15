@@ -6,7 +6,7 @@ A small Rails engine that provides an opinionated, git-based, Markdown wiki.
 
 This aims to become a suitable replacement for [GollumRails](https://github.com/dancinglightning/gollum_rails), which does not actually use gollum-lib, but also provides an engine with Gollum-like features. (The name is historic.)
 
-If instead of a mountable engine you want to use gollum-lib to weave wiki functionality into your own models  and views, consider [gollum_rails](https://github.com/nirnanaaa/gollum_rails).
+If instead of a mountable engine you want to use gollum-lib to weave wiki functionality into your own models and views, consider [gollum_rails](https://github.com/nirnanaaa/gollum_rails). If you just want a wiki that uses your existing database, look at [Irwi](https://github.com/alno/irwi)
 
 Rails Wiki exists because we desired a git-backed wiki using Markdown, YAML frontmatter, and a hierarchical namespace for pages and attachments.
 
@@ -74,7 +74,7 @@ Pathnames that begin with underscore (`_`) are reserved.
 1. Markdown link rooting
 2. Recursive page deletion
 3. Individual attachment deletion
-4. Path redirection rules
+4. ~~Path redirection rules~~
 5. Configurable help paths
 6. Nicer attachment upload
 7. Nicer page editing

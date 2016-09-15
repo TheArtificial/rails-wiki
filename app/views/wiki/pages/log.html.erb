@@ -8,4 +8,4 @@
   <%= auto_discovery_link_tag :rss, {controller: 'pages', action: 'log'} %>
 <% end %>
 
-<%= render 'wiki/changes' %>
+<%= render partial: 'wiki/updates', locals: {updates: @updates} %>

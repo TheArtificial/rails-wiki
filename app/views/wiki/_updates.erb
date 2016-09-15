@@ -1,0 +1,25 @@
+<dl class="changelog">
+  <% updates.each do |update|
+      path = update[:path]
+      page = update[:page]
+      author_name = update[:author_name]
+      stats = update[:stats]
+      message = update[:message]
+      date = update[:date]
+      count = update[:count]
+  %>
+  <dt>
+    <% if page.present? %>
+      <% if page.new_page? %>
+        <%= page.path %>
+      <% else %>
+        <%= page.parent_path %>/<%= link_to_unless page.new_page?, page.name, wiki.page_path(page) %>
+      <% end %>
+    <% end %>
+  </dt><dd>
+    <%= author_name %>
+    <span title="<%= "#{pluralize(count-1, 'other changes')} evaluated" if (count > 1) %>"><%= message %></span>
+    <time datetime="<%= date.iso8601 %>" title="<%= date.rfc822 %>"><%= time_ago_in_words(date, include_seconds: false) %> ago</time>
+  </dd>
+  <% end %>
+</dl>

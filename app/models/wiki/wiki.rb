@@ -4,7 +4,7 @@ module Wiki
 class Wiki
   # a gollum wiki facade
 
-  # unloadable
+  unloadable
 
   def gollum_wiki
     return @gollum_wiki
@@ -34,40 +34,66 @@ class Wiki
     search_regex(regex, options)
   end
 
-  def changelog(parent_path=nil, max_commits=100)
+  # one entry for each commit/file
+  def recent_changes(parent_path=nil, max=100, offset=0)
     log = []
     # this is more gollum proper, but we can't set the path
     # commits = @gollum_wiki.latest_changes(max_count: max)
     ref = @gollum_wiki.ref # probably 'master'
-    commits = @gollum_wiki.repo.log(ref, parent_path, {max_count: max_commits})
+    commits = @gollum_wiki.repo.log(ref, parent_path, {limit: max, offset: offset})
     commits.each do |c|
       c.stats.files.each do |f|
         path = f[0]
         if File.extname(path) == '.md'
           path.chomp!('.md')
-          log << {path: path, page: Page.new(wiki: self, path: path), commit: c}
+          log << {path: path, commit: c}
         end
       end
     end
     return log
   end
 
-  def recent_updates(parent_path=nil, max_commits=100)
-    updates = []
-    changelog(parent_path, max_commits).group_by{|c| c[:path]}.each do |change_path|
-      first_commit = change_path[1].first
-      commit = first_commit[:commit]
+  # one entry for each file
+  def recent_updates(options)
+    default_options = {
+      path: nil,
+      limit: 10
+    }
+    options = default_options.merge(options)
 
-      path = change_path[0]
-      page = first_commit[:page]
-      author_name = commit.author.name
-      message = commit.message
-      stats = commit.stats
-      date = commit.authored_date
+    paging_window = options[:limit] * 2
+paging_window = 1 # TODO remove
 
-      updates << {path: path, page: page, author_name: author_name, message: message, stats: stats, date: date}
+    updates_hash = {}
+    offset = 0
+    limit = options[:limit]
+    until updates_hash.count >= limit
+      changes = recent_changes(options[:path], paging_window, offset)
+      group_changes_into_updates(changes, updates_hash)
+      offset += paging_window
     end
-    return updates
+    return updates_hash.values.take(limit)
+  end
+
+  def group_changes_into_updates(changes, updates_hash)
+    changes.each do |change|
+      path = change[:path]
+      if updates_hash.key?(path)
+        # ignore, we already have a (newer) commit for this path
+        updates_hash[path][:count] += 1
+      else
+        # *now* we'll bother making a Page and adding to our hash
+        page = Page.new(wiki: self, path: change[:path])
+        commit = change[:commit]
+        author_name = commit.author.name
+        author_email = commit.author.email
+        message = commit.message
+        stats = commit.stats
+        date = commit.authored_date
+
+        updates_hash[path] = {path: path, page: page, author_name: author_name, author_email: author_email, message: message, stats: stats, date: date, count: 1}
+      end
+    end
   end
 
   def create_page(path)

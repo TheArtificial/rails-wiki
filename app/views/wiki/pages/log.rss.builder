@@ -9,16 +9,19 @@ xml.rss :version => "2.0" do
     xml.link root_url
     # xml.language "en"
 
-    @changes_by_path.each do |change_path|
-      path = change_path[0]
-      first_commit = change_path[1].first
-      page = first_commit[:page]
-      commit = first_commit[:commit]
-      desc = "#{commit.author.name} #{commit.message}"
+    @updates.each do |update|
+      path = update[:path]
+      page = update[:page]
+      commit = update[:commit]
+      date = update[:date]
+      author_name = update[:author_name]
+      author_email = update[:author_email]
+      message = update[:message]
+      desc = "#{author_name} #{message}"
       xml.item do
         xml.title page.path
-        xml.author "#{commit.author.email} (#{commit.author.name})"
-        xml.pubDate commit.authored_date.rfc822
+        xml.author "#{author_email} (#{author_name})"
+        xml.pubDate date.rfc822
         if page.present?
           if page.new_page?
             xml.link page_url(page.parent_path)
@@ -26,7 +29,7 @@ xml.rss :version => "2.0" do
             xml.link page_url(page)
           end
         end
-        xml.guid page_url(page.path)
+        xml.guid page_url(path)
         xml.description "<p>" + desc + "</p>"
       end
     end

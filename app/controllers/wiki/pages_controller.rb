@@ -14,7 +14,7 @@ class Wiki::PagesController < Wiki::ApplicationController
   end
 
   def log
-    @changes_by_path = Rails.configuration.wiki.recent_updates
+    @updates = Rails.configuration.wiki.recent_updates(limit: 50)
     respond_to do |format|
       format.html
       format.rss { render layout: false }
