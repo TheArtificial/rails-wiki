@@ -31,8 +31,10 @@ class Wiki::PagesController < Wiki::ApplicationController
     @page = Rails.configuration.wiki.create_page(params[:path])
     @page.update(page_params)
     if @page.save(current_user)
+      flash[:notice] = "Created new page #{@page.name}"
       redirect_to @page
     else
+      flash.now[:error] = "Error creating #{@page.name}"
       render :edit
     end
   end
@@ -46,8 +48,10 @@ class Wiki::PagesController < Wiki::ApplicationController
     @page = Rails.configuration.wiki.find_page(params[:path])
     @page.update(page_params)
     if @page.save(current_user)
+      flash[:notice] = "Saved changes to #{@page.name}"
       redirect_to @page
     else
+      flash.now[:error] = "Error saving #{@page.name}"
       render :edit
     end
   end
@@ -56,24 +60,30 @@ class Wiki::PagesController < Wiki::ApplicationController
     return_path = root_path
     # ext = File.extname(request.path_info).downcase
     # if ext.blank? || ext == "html"
-      page = Rails.configuration.wiki.find_page(params[:path])
-      parent_path = page.parent_path
-      if parent_path.empty?
-        return_path = root_path
-      else
-        return_path = page_path(parent_path)
-      end
-      page.destroy!(current_user)
-      # TODO: recurse pages and attachments
+      if page = Rails.configuration.wiki.find_page(params[:path])
+        page_path = page.path
+        parent_path = page.parent_path
+        if parent_path.empty?
+          return_path = root_path
+        else
+          return_path = page_path(parent_path)
+        end
+        page.destroy!(current_user)
+        # TODO: recurse pages and attachments
 
-    # else
-    #   file = Rails.configuration.wiki.find_file(params[:path] + '.' + params[:format])
-    #   return_path = page_path(file.parent_path)
-    #   file.destroy!(current_user)
-    # end
+      # else
+      #   file = Rails.configuration.wiki.find_file(params[:path] + '.' + params[:format])
+      #   return_path = page_path(file.parent_path)
+      #   file.destroy!(current_user)
+      # end
 
-    # TODO: look for first *valid* parent
-    redirect_to return_path
+      # TODO: look for first *valid* parent
+      flash[:notice] = "Removed #{page_path}"
+      redirect_to return_path
+    else
+      flash[:error] = "Unable to find #{params[:path]}"
+      redirect_to return_path
+    end
   end
 
 private

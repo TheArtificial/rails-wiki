@@ -3,13 +3,11 @@
 <%= javascript_include_tag 'inject.js' %>
 
 <% content_for :page_parents do %>
-  <div class="parents">
-  <% if @page.parents
-      @page.parents.each do |v| %>
-    <%= link_to v.name, v unless v.nil? %> /
-  <%  end
-    end %>
-  </div>
+  <% if @page.parents.present? %>
+    <% @page.parents.each do |v| %>
+      <%= link_to v.name, v unless v.nil? %> /
+    <% end %>
+  <% end %>
 <% end %>
 
 <ul class="toolbar">
