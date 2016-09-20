@@ -22,6 +22,10 @@ class Page
     @name=value unless value.nil?
   end
 
+  def title
+    @name.titleize
+  end
+
   def content=(value)
     content_will_change!
     @content=value unless value.nil?
@@ -131,7 +135,7 @@ class Page
 
   def save(user)
     if @blank
-      commit = {name: user.name, email: user.email, message: "created #{@path}"}
+      commit = {name: user.name, email: user.email, message: "created #{title}"}
       Rails.logger.debug("creating #{@path}")
 
       @wiki.pull_repo
@@ -140,7 +144,7 @@ class Page
       @gollum_page = @wiki.find_gollum_page(@path)
       @blank = false
     else
-      commit = {name: user.name, email: user.email, message: "updated #{@path}"}
+      commit = {name: user.name, email: user.email, message: "updated #{title}"}
       Rails.logger.debug("saving #{@path}")
 
       @wiki.pull_repo
@@ -153,7 +157,7 @@ class Page
 
       # NOTE: may raise Gollum::DuplicatePageError
       commit_options = {
-        message: "added #{@uploaded_files.length} attachments to #{@path}",
+        message: "added #{@uploaded_files.length} attachments to #{title}",
         name: user.name,
         email: user.email
       }
@@ -194,7 +198,7 @@ class Page
   end
 
   def destroy!(user)
-    commit = {name: user.name, email: user.email, message: "removed #{@path}"}
+    commit = {name: user.name, email: user.email, message: "removed #{title}"}
     Rails.logger.debug("removing #{@path}")
     @wiki.gollum_wiki.delete_page(@gollum_page, commit)
     @wiki.push_repo
