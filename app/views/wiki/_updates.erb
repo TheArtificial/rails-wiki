@@ -1,4 +1,6 @@
-<% if options[:style] == :simple
+<%
+  options ||= {}
+  if options[:style] == :simple
 %>
   <ol class="wiki changelog">
 <% else %>
