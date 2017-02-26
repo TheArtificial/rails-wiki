@@ -16,7 +16,7 @@ module Wiki
       if ext.blank? || ext == ".html"
         @page = Rails.configuration.wiki.find_page(params[:path])
         if @page.nil?
-          raise Exception.new("Attempt to create orphan page")
+          raise PageError.new("Cannot create orphan page", params[:path])
         elsif @page.new_page?
           redirect_to controller: :pages, action: :new
         else
@@ -25,7 +25,7 @@ module Wiki
       else
         @attachment = Rails.configuration.wiki.find_attachment(params[:path], ext)
         if @attachment.blank?
-          raise ActionController::RoutingError.new('File Not Found')
+          raise ActionController::RoutingError.new('Attachment Not Found')
         else
           send_file @attachment.filesystem_path, type: @attachment.mime_type, disposition: 'inline'
         end

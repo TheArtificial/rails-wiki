@@ -104,7 +104,7 @@ class Wiki
       if page.parent_path.blank?
         # page is at root
         if path.starts_with?('_')
-          raise Exception.new("Root page names cannot begin with \"_\"")
+          raise PageError.new("Root page names cannot begin with \"_\"", path)
         else
           return page
         end
@@ -112,13 +112,13 @@ class Wiki
         # page should have parents
         parent_page = Page.new(wiki: self, path: page.parent_path)
         if parent_page.new_page?
-          raise Exception.new("Cannot create orphan page at #{path}")
+          raise PageError.new("Cannot create orphan page", path)
         else
           return page
         end
       end
     else
-      raise Exception.new("Page already exists at #{path}")
+      raise PageError.new("Page already exists", path)
     end
   end
 
@@ -129,7 +129,7 @@ class Wiki
       if page.parent_path.blank?
         # page is at root
         if path.starts_with?('_')
-          raise Exception.new("Root page names cannot begin with \"_\"")
+          raise PageError.new("Root page names cannot begin with \"_\"", path)
         else
           return page
         end
@@ -219,7 +219,7 @@ class Wiki
         return output
       else
         puts "Unable to push: #{output}"
-        raise Exception.new("Git push in #{@gollum_wiki.path} failed with status #{$?.exitstatus}: #{output}")
+        raise GitError.new("Git push in #{@gollum_wiki.path} failed with status #{$?.exitstatus}: #{output}")
       end
     else
       return "No upstream"
@@ -235,7 +235,7 @@ class Wiki
         return output
       else
         puts "Unable to pull: #{output}"
-        raise Exception.new("Git pull in #{@gollum_wiki.path} failed with status #{$?.exitstatus}: #{output}")
+        raise GitError.new("Git pull in #{@gollum_wiki.path} failed with status #{$?.exitstatus}: #{output}")
       end
     else
       return "No upstream"

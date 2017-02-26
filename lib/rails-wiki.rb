@@ -1,4 +1,5 @@
 require 'wiki/engine'
+require 'wiki/exceptions'
 require 'gollum-lib'
 require 'frontmatter'
 require 'markdown'
