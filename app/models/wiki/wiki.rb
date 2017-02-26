@@ -112,7 +112,7 @@ class Wiki
         # page should have parents
         parent_page = Page.new(wiki: self, path: page.parent_path)
         if parent_page.new_page?
-          raise PageError.new("Cannot create orphan page", path)
+          raise PageError.new("Cannot create a page with no parent", path)
         else
           return page
         end
