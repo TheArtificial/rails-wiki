@@ -16,5 +16,5 @@ gemspec
 # gem 'gollum-lib'
 # gem 'rugged', '~> 0.23'
 
-# gem 'gollum-rugged_adapter', '~> 0.4.2'
+# gem 'gollum-rugged_adapter', '~> 0.4.3'
 # gem 'redcarpet'
