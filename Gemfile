@@ -12,9 +12,3 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
-
-# gem 'gollum-lib'
-# gem 'rugged', '~> 0.23'
-
-# gem 'gollum-rugged_adapter', '~> 0.4.3'
-# gem 'redcarpet'
