@@ -125,6 +125,15 @@ class Page
     (parent_path == '.') ? '' : parent_path # + '/'
   end
 
+  def relative_page(path)
+    if path.starts_with?('/')
+      full_path = path[1..-1]
+    else
+      full_path = @path + '/' + path
+    end
+    return @wiki.find_page(full_path)
+  end
+
   def children
     @wiki.pages_under_path(@path)
   end
@@ -211,44 +220,6 @@ class Page
   def persisted?
     # TODO: make this a real dirty flag
     ! self.new_page?
-  end
-
-protected
-
-  SELF_REF = '.'
-  PARENT = '..'
-
-  RULE_2A = /\/\.\/|\/\.$/
-  RULE_2B_2C = /\/([^\/]*)\/\.\.\/|\/([^\/]*)\/\.\.$/
-  RULE_2D = /^\.\.?\/?/
-  RULE_PREFIXED_PARENT = /^\/\.\.?\/|^(\/\.\.?)+\/?$/
-
-  # Resolves paths to their simplest form.
-  # Shamelessly lifted from https://github.com/sporkmonger/addressable
-  def self.normalize_path(path)
-    normalized_path = path.dup
-    begin
-      mod = nil
-      mod ||= normalized_path.gsub!(RULE_2A, SLASH)
-
-      pair = normalized_path.match(RULE_2B_2C)
-      parent, current = pair[1], pair[2] if pair
-      if pair && ((parent != SELF_REF && parent != PARENT) ||
-          (current != SELF_REF && current != PARENT))
-        mod ||= normalized_path.gsub!(
-          Regexp.new(
-            "/#{Regexp.escape(parent.to_s)}/\\.\\./|" +
-            "(/#{Regexp.escape(current.to_s)}/\\.\\.$)"
-          ), SLASH
-        )
-      end
-
-      mod ||= normalized_path.gsub!(RULE_2D, EMPTY_STR)
-      # Non-standard, removes prefixed dotted segments from path.
-      mod ||= normalized_path.gsub!(RULE_PREFIXED_PARENT, SLASH)
-    end until mod.nil?
-
-    return normalized_path
   end
 
 end

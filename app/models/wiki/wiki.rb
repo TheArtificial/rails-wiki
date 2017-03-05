@@ -99,7 +99,7 @@ class Wiki
   end
 
   def create_page(path)
-    page = Page.new(wiki: self, path: path)
+    page = Page.new(wiki: self, path: normalize_path(path))
     if page.new_page?
       if page.parent_path.blank?
         # page is at root
@@ -123,7 +123,7 @@ class Wiki
   end
 
   def find_page(path)
-    page = Page.new(wiki: self, path: path)
+    page = Page.new(wiki: self, path: normalize_path(path))
     if page.new_page?
       Rails.logger.info("rails-wiki: new page #{path}")
       if page.parent_path.blank?
@@ -240,6 +240,41 @@ class Wiki
     else
       return "No upstream"
     end
+  end
+
+private
+
+  RULE_2A = /\/\.\/|\/\.$/
+  RULE_2B_2C = /\/([^\/]*)\/\.\.\/|\/([^\/]*)\/\.\.$/
+  RULE_2D = /^\.\.?\/?/
+  RULE_PREFIXED_PARENT = /^\/\.\.?\/|^(\/\.\.?)+\/?$/
+
+  # Resolves paths to their simplest form.
+  # Shamelessly lifted from https://github.com/sporkmonger/addressable
+  def normalize_path(path)
+    normalized_path = path.dup
+    begin
+      mod = nil
+      mod ||= normalized_path.gsub!(RULE_2A, '/')
+
+      pair = normalized_path.match(RULE_2B_2C)
+      parent, current = pair[1], pair[2] if pair
+      if pair && ((parent != '.' && parent != '..') ||
+          (current != '.' && current != '..'))
+        mod ||= normalized_path.gsub!(
+          Regexp.new(
+            "/#{Regexp.escape(parent.to_s)}/\\.\\./|" +
+            "(/#{Regexp.escape(current.to_s)}/\\.\\.$)"
+          ), '/'
+        )
+      end
+
+      mod ||= normalized_path.gsub!(RULE_2D, '')
+      # Non-standard, removes prefixed dotted segments from path.
+      mod ||= normalized_path.gsub!(RULE_PREFIXED_PARENT, '/')
+    end until mod.nil?
+
+    return normalized_path
   end
 
 end
