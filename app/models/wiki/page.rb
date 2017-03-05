@@ -23,7 +23,11 @@ class Page
   end
 
   def title
-    @name.titleize
+    if content_has_title?
+      @content[/\A#\s(.*)$/, 1]
+    else
+      @name.titleize
+    end
   end
 
   def content=(value)
@@ -87,7 +91,13 @@ class Page
 
   # may be out of sync with @content!
   def html
-    @gollum_page.formatted_data unless @blank
+    if @blank
+      "<!-- no page content -->".html_safe
+    elsif content_has_title?
+      @gollum_page.formatted_data.sub(/\A(.*)$/,'')
+    else
+      @gollum_page.formatted_data
+    end
   end
 
   def metadata
@@ -220,6 +230,12 @@ class Page
   def persisted?
     # TODO: make this a real dirty flag
     ! self.new_page?
+  end
+
+private
+
+  def content_has_title?
+    @content.starts_with?('# ')
   end
 
 end
