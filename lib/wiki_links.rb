@@ -9,7 +9,7 @@ class Gollum::Filter::WikiLinks < Gollum::Filter
     context_path = this_page.path
 
     data.gsub(/\[(.+?)\][^\(]/) do
-      path = $1
+      path = $1.gsub(/\s/, '-')
       if path.starts_with?('/')
         resolved_path = path[1..-1]
       else
