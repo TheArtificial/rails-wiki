@@ -32,7 +32,7 @@ end
 gollum = Gollum::Wiki.new(local_dir, {
   base_path: '/wiki/view',
   index_page: 'home',
-  filter_chain: [:Frontmatter, :TOC, :Sanitize, :Tags, :Markdown] # frontmatter and markdown are bespoke
+  filter_chain: [:Frontmatter, :TOC, :Sanitize, :WikiLinks, :Markdown] # frontmatter, wikilinks, and markdown are bespoke
 })
 puts "Setting wiki to #{local_dir}, git: #{gollum.repo.git}"
 wiki = Wiki::Wiki.new(gollum_wiki: gollum, upstream: upstream, history_url: Wiki.history_url)
