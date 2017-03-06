@@ -32,6 +32,7 @@ class Page
 
   def content=(value)
     content_will_change!
+    value << "\n" unless value.ends_with?("\n")
     @content=value unless value.nil?
   end
 
@@ -235,7 +236,7 @@ class Page
 private
 
   def content_has_title?
-    @content.starts_with?('# ')
+    @content && @content.starts_with?('# ')
   end
 
 end
