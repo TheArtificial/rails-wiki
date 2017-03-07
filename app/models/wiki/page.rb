@@ -236,7 +236,7 @@ class Page
 private
 
   def content_has_title?
-    @content && @content.starts_with?('# ')
+    @content.blank? ? false : @content.starts_with?('# ')
   end
 
 end
