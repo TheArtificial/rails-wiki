@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency 'rails', '~> 4.2'
-  s.add_dependency 'gollum-lib', '~> 4.1'
-  s.add_dependency 'gollum-rugged_adapter', '0.4.2'
-  s.add_dependency 'redcarpet', '~> 3.3'
+  s.add_dependency 'gollum-lib', '~> 4.2'
+  s.add_dependency 'gollum-rugged_adapter', '0.4'
+  s.add_dependency 'redcarpet', '~> 3.4'
 end
