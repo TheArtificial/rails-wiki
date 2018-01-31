@@ -8,12 +8,16 @@ class Gollum::Filter::WikiLinks < Gollum::Filter
 
     data.gsub(/\[\[(.+?)\]\]/) do
       path = $1.gsub(/\s/, '-')
-      page = this_page.relative_page(path)
+      begin
+        page = this_page.relative_page(path)
 
-      if page.nil? || page.new_page?
-        "[<a href=\"#{Wiki::Engine.routes.url_helpers.new_page_path(page)}\" class=\"wikilink new\">create #{path}</a>]"
-      else
-        "<a href=\"#{Wiki::Engine.routes.url_helpers.page_path(page)}\" class=\"wikilink new\">#{page.title}</a>"
+        if page.new_page?
+          "[<a href=\"#{Wiki::Engine.routes.url_helpers.new_page_path(page)}\" class=\"wikilink new\">create #{path}</a>]"
+        else
+          "<a href=\"#{Wiki::Engine.routes.url_helpers.page_path(page)}\" class=\"wikilink new\">#{page.title}</a>"
+        end
+      rescue PageError => e
+        "[[<a href=\"#{Wiki::Engine.routes.url_helpers.page_path(page)}\" class=\"wikilink error\">#{e.message}</a>]]"
       end
     end
   end
