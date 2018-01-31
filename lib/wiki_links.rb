@@ -16,8 +16,8 @@ class Gollum::Filter::WikiLinks < Gollum::Filter
         else
           "<a href=\"#{Wiki::Engine.routes.url_helpers.page_path(page)}\" class=\"wikilink new\">#{page.title}</a>"
         end
-      rescue PageError => e
-        "[[<a href=\"#{Wiki::Engine.routes.url_helpers.page_path(page)}\" class=\"wikilink error\">#{e.message}</a>]]"
+      rescue Wiki::PageError => e
+        "[[<a href=\"#{Wiki::Engine.routes.url_helpers.new_page_path(path)}\" class=\"wikilink error\" title=\"#{e.message}\">#{path}</a>]]"
       end
     end
   end

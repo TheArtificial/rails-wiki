@@ -137,9 +137,7 @@ class Wiki
         # page should have parents
         parent_page = Page.new(wiki: self, path: page.parent_path)
         if parent_page.new_page?
-          Rails.logger.info("rails-wiki: parent is also new #{page.parent_path}")
-          raise PageError.new("Cannot create child of missing page #{page.parent_path}", path)
-          return nil
+          raise PageError.new("Cannot create child of missing page \"#{page.parent_path}\"", path)
         else
           return page
         end
