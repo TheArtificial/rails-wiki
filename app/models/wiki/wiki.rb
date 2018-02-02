@@ -25,7 +25,7 @@ class Wiki
   end
 
   def search(query)
-    results = @gollum_wiki.search(query)
+    results = @gollum_wiki.search(query.force_encoding("UTF-8")) # rugged adapter insists
     pages = results.sort_by{ |h| h[:count] }.map{ |h| Page.new(wiki: self, path: h[:name]) }
   end
 
